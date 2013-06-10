@@ -12,7 +12,10 @@ class TestRequests(unittest.TestCase):
         self.expected_params = {
             'password': 'the_best_kept_secret_ever',
             'user': 'tester',
-            'text': "I'm in space"
+            'text': "I'm in space",
+        }
+        self.expected_headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
         }
 
     @mock.patch('request.requests')
@@ -20,28 +23,32 @@ class TestRequests(unittest.TestCase):
         self.request.send(['+359555000'], content="I'm in space")
         self.expected_params['dests'] = '+359555000'
         mock_requests.post.assert_called_with(self.request.api_url,
-                                              params=self.expected_params)
+                                              params=self.expected_params,
+                                              headers=self.expected_headers)
 
     @mock.patch('request.requests')
     def test_multiple_recipients(self, mock_requests):
         self.request.send(['+359555000', '+358555001'], content="I'm in space")
         self.expected_params['dests'] = '+359555000,+358555001'
         mock_requests.post.assert_called_with(self.request.api_url,
-                                              params=self.expected_params)
+                                              params=self.expected_params,
+                                              headers=self.expected_headers)
 
     @mock.patch('request.requests')
     def test_one_recipient_as_string(self, mock_requests):
         self.request.send('+359555000', content="I'm in space")
         self.expected_params['dests'] = '+359555000'
         mock_requests.post.assert_called_with(self.request.api_url,
-                                              params=self.expected_params)
+                                              params=self.expected_params,
+                                              headers=self.expected_headers)
 
     @mock.patch('request.requests')
     def test_one_recipient_as_list(self, mock_requests):
         self.request.send(['+359555000'], content="I'm in space")
         self.expected_params['dests'] = '+359555000'
         mock_requests.post.assert_called_with(self.request.api_url,
-                                              params=self.expected_params)
+                                              params=self.expected_params,
+                                              headers=self.expected_headers)
 
     @mock.patch('request.requests')
     def test_with_enabled_unicode(self, mock_requests):
@@ -53,7 +60,8 @@ class TestRequests(unittest.TestCase):
         self.expected_params['dests'] = '+359555000'
         self.expected_params['unicode'] = 'yes'
         mock_requests.post.assert_called_with(unicode_request.api_url,
-                                              params=self.expected_params)
+                                              params=self.expected_params,
+                                              headers=self.expected_headers)
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,6 +9,7 @@ API_SSL_URL = 'https://gw.labyrintti.com:28080/sendsms'
 
 class LabyrinpyRequest(object):
     kwargs = {}
+    headers = {}
 
     def __init__(self, user, password, **kwargs):
         self.user = user
@@ -22,7 +23,8 @@ class LabyrinpyRequest(object):
     def send(self, recipients, content='', message_type='text', method='POST'):
         if not isinstance(recipients, (tuple, list)):
             recipients = [recipients]
-        request = getattr(requests, method.lower(), 'post')
+
+        request, headers = self._request_method(method, self.headers)
         payload = {
             'user': self.user,
             'password': self.password,
@@ -30,4 +32,10 @@ class LabyrinpyRequest(object):
             message_type: content,
         }
         payload.update(self.kwargs)
-        return request(self.api_url, params=payload)
+        return request(self.api_url, params=payload, headers=headers)
+
+    def _request_method(self, method, headers):
+        if method.lower() == 'post':
+            headers = self.headers.copy()
+            headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        return getattr(requests, method.lower(), 'post'), headers
