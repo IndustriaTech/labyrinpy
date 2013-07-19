@@ -37,7 +37,7 @@ As you send your request to the Gateway it returns you information if your messa
 
 Then you can use some methods such as:
 
-    give_me_info.is_send()  #Return if all messages have been sent successfully
+    give_me_info.is_send()  #Returns True if all messages have been sent successfully
 
 and
 
