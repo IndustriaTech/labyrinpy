@@ -9,6 +9,41 @@ Installation
 
     pip install git+git://github.com/Vladimiroff/labyrinpy.git
 
+
+HowTo
+---------------
+
+Request (sending sms or giving orders to the SMS Gateway):
+
+One must supply the gateway with at least three things:
+    1) User
+    2) Password
+    3) Receiver
+
+The User and Password must be given at initialization of the LabyrinpyRequest object (login with user/password).
+
+    sender = LabyrinpyRequest(username, password)
+
+After that, in order to send sms, you have method called 'send'. Send receive as arguments the following things: list of recipients, content and message type (by default it is text - may be binary or wap-url)
+
+    sender.send([phone_num1, phone_num2, ...], 'sms_message_content', 'message_type')
+
+
+Response (feedback from the SMS Gateway):
+
+As you send your request to the Gateway it returns you information if your messages have been transmitted through it or not. In order to gain further info if everything has been fine you can catch that response and observe it
+
+    give_me_info = LabyrinpyResponse(response_from_SMS_GATEWAY)
+
+Then you can use some methods such as:
+
+    give_me_info.is_send()  #Return if all messages have been sent successfully
+
+and
+
+    give_me_info.errors()  #Returns the status of the errors if there are such
+
+
 License
 ---------------
 
