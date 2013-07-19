@@ -39,3 +39,37 @@ class LabyrinpyRequest(object):
             headers = self.headers.copy()
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         return getattr(requests, method.lower(), 'post'), headers
+
+    def method_name(self):
+        pass
+
+
+class LabyrinpyResponse(object):
+
+    def __init__(self, response):
+        self.response = response
+        self.messages = self._extract_messages()
+
+    def _extract_messages(self):
+        messages = [msg.split(' ', 4) for msg in
+                    self.response.content.split('\n')]
+        # messages.pop()
+
+        for msg in messages[:-1]:
+            if msg[1] == 'OK':
+                msg[4] = msg[3] + ' ' + msg[4]
+                msg[3] = msg[2]
+                msg[2] = 0
+
+        return [{'number': msg[0],
+                 'status': msg[1],
+                 'error_code': int(msg[2]),
+                 'message_count': int(msg[3]),
+                 'description': msg[4]} for msg in messages[:-1]]
+
+    def is_send(self):
+        return {msg_info['status'] for msg_info in self.messages} == {'OK'}
+
+    def errors(self):
+        return [message for message in
+                self.messages if message['status'] == 'ERROR']
