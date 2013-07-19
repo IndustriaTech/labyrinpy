@@ -1,13 +1,13 @@
 labyrinpy
 ===============
 
-Implementation of Labyrintti SMS Gateway API for Python
+Implementation of [Labyrintti SMS Gateway](http://www.labyrintti.bg/en/sms-gateway.php) API for Python
 
 
 Installation
 ---------------
 
-    pip install git+git://github.com/Vladimiroff/labyrinpy.git
+    pip install git+git://github.com/MagicSolutions/labyrinpy.git
 
 
 HowTo
