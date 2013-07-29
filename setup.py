@@ -11,7 +11,7 @@ setup(
     zip_safe=False,
     install_requires=['requests>=1.2.3'],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
